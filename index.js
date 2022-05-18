@@ -79,10 +79,16 @@ async function run() {
       }
     });
 
-    app.delete("/product/:id", async (req, res) => {
+    app.post("/newtodo", async (req, res) => {
+      const newTodo = req.body;
+      const result = await todoCollection.insertOne(newTodo);
+      res.send(result);
+    });
+
+    app.delete("/todolist/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
-      const result = await productCollection.deleteOne(query);
+      const result = await todoCollection.deleteOne(query);
       res.send(result);
     });
   } finally {
