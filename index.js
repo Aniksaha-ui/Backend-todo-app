@@ -91,6 +91,23 @@ async function run() {
       const result = await todoCollection.deleteOne(query);
       res.send(result);
     });
+
+    app.put("/todo/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedTodo = req.body;
+      console.log(updatedTodo);
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          status: updatedTodo.status,
+        },
+      };
+
+      const result = await todoCollection.updateOne(filter, updateDoc, options);
+      result.quantity = updatedTodo.quantity;
+      res.send(result);
+    });
   } finally {
   }
 }
